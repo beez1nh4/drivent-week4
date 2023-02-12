@@ -1,0 +1,1 @@
+import { notFoundError } from "@/errors";
