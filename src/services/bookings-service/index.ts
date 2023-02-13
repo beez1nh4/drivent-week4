@@ -6,7 +6,7 @@ import roomRepository from "@/repositories/room-repository";
 
 async function getBooking(userId: number) {
   
-  checkIfBookingIsAllowed(userId); 
+  await checkIfBookingIsAllowed(userId); 
 
   const booking = await bookingRepository.findBookingByUsedId(userId)
 
@@ -19,9 +19,15 @@ async function getBooking(userId: number) {
 
 async function postBooking(userId: number, roomId: number) {
 
-  checkIfBookingIsAllowed(userId);
+  await checkIfBookingIsAllowed(userId);
 
   await checkRoom(roomId);
+
+  const bookingExists = await bookingRepository.findBookingByUsedId(userId)
+
+  if (bookingExists) {
+    throw forbiddenError();
+  }
 
   const booking = await bookingRepository.createBooking(userId, roomId)
 
@@ -30,16 +36,20 @@ async function postBooking(userId: number, roomId: number) {
 
 async function updateBooking(userId: number, roomId: number, bookingId: number) {
 
-  checkIfBookingIsAllowed(userId);
+  await checkIfBookingIsAllowed(userId);
 
   const booking = await bookingRepository.findBookingByUsedId(userId)
 
   if (!booking) {
-    throw notFoundError();
+    throw forbiddenError();
   }
 
   if(booking.id !== bookingId){
     throw unauthorizedError();
+  }
+
+  if(booking.Room.id === roomId){
+    throw forbiddenError();
   }
 
   await checkRoom(roomId);

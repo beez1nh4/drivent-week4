@@ -5,7 +5,8 @@ async function findBookingByUsedId(userId: number) {
       where: {
         userId
       },
-      include: {
+      select: {
+        id: true,
         Room: true,
       }
     });
