@@ -21,14 +21,14 @@ async function postBooking(userId: number, roomId: number) {
 
   checkIfBookingIsAllowed(userId);
 
-  const room = await checkRoom(roomId);
+  await checkRoom(roomId);
 
   const booking = await bookingRepository.createBooking(userId, roomId)
 
   return booking
 }
 
-async function updateBooking(userId: number, bookingId: number, roomId: number) {
+async function updateBooking(userId: number, roomId: number, bookingId: number) {
 
   checkIfBookingIsAllowed(userId);
 
