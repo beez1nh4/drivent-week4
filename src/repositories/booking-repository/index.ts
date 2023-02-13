@@ -31,6 +31,7 @@ async function updateBooking(bookingId: number, roomId: number) {
     });
   }
 
+
 const bookingRepository = {
     findBookingByUsedId,
     createBooking,

@@ -56,7 +56,9 @@ async function checkRoom(roomId:number) {
     throw notFoundError();
   }
 
-  if(room.capacity === 0){
+  const roomBooking = await roomRepository.getNumberOfBookingsByRoomId(roomId)
+
+  if(roomBooking._count.Booking >= room.capacity){
     throw roomFullError();
   }
 

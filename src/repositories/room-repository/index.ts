@@ -7,10 +7,21 @@ async function findRoomById(roomId: number) {
       }
     });
 }
-  
+
+async function getNumberOfBookingsByRoomId(roomId:number) {
+    return prisma.room.findFirst({
+        where: {
+          id: roomId,
+        },
+        include: {
+          _count: { select: { Booking: true } },
+        },
+      });
+}
 
 const roomRepository = {
-    findRoomById
+    findRoomById,
+    getNumberOfBookingsByRoomId
   };
   
   export default roomRepository;
